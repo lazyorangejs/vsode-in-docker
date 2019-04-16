@@ -14,4 +14,4 @@ kubectl () {
     lazyorange/kubectl:$kubectl_ver "$@"
 }
 
-exec kubectl "$@"
+kubectl "$@"
