@@ -1,44 +1,20 @@
 version: '3.4'
 
-volumes: 
-  vscode_extensions:
-
 services:
-  helm:
-    image: $CI_REGISTRY_URL/helm:${HELM_VERSION:-v2.13.1}
-    build: 
-      args:
-        helm_ver: ${HELM_VERSION:-v2.13.1}
-      context: ./helm
-
-  kubectl:
-    image: $CI_REGISTRY_URL/kubectl:${KUBECTL_VERSION:-v1.14.0}
-    build: 
-      args:
-        kubectl_ver: ${KUBECTL_VERSION:-v1.14.0}
-      context: ./kubectl
-
-  vscode_exts: 
-    image: $CI_REGISTRY_URL/code-ext:latest
-    build:
-      context: ./vscode-exts
-
   vscode:
-    image: $CI_REGISTRY_URL/code-server:v0.1.0-rc1
+    image: $CI_REGISTRY_URL/code-server:v0.1.0-rc7
     restart: always
     # network_mode: host
     hostname: ${HOSTNAME:-MacBook-Pro}
     privileged: true
     build:
       context: .
-    environment: 
-      DOCKER_HOST: tcp://dind:2375
     env_file: 
     - .env
     ports: 
       - 8080/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./vscode-cache:/root/.local/share/code-server
+      - .tmp/vscode-cache:/root/.local/share/code-server
     # memswap_limit: -1
     command: code-server --port 8080 --user-data-dir /root/.local/share/code-server --extensions-dir /root/.vscode/extensions --allow-http --no-auth /root/Projects

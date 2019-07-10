@@ -99,4 +99,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source ~/.dvm/dvm.sh && dvm use edge
+source ~/.dvm/dvm.sh && dvm use edge 
+if [ -f ~/.dvm/bin/docker/edge/docker ]; then
+    cp ~/.dvm/bin/docker/edge/docker /usr/local/bin/docker
+fi
